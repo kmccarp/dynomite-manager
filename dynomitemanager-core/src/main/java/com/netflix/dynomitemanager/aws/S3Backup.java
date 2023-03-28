@@ -90,7 +90,7 @@ public class S3Backup implements Backup {
                 // Create a list of UploadPartResponse objects. You get one of
                 // these for
                 // each part upload.
-                List<PartETag> partETags = new ArrayList<PartETag>();
+                List<PartETag> partETags = new ArrayList<>();
 
                 InitiateMultipartUploadRequest initRequest = new InitiateMultipartUploadRequest(awsCommonConfig.getBucketName(),
                         keyName);
