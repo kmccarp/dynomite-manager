@@ -23,7 +23,7 @@ import com.netflix.dynomitemanager.aws.S3Backup;
 import com.netflix.dynomitemanager.aws.S3Restore;
 import com.netflix.dynomitemanager.config.FloridaConfig;
 import com.netflix.dynomitemanager.config.InstanceState;
-import com.netflix.dynomitemanager.dualAccount.AwsRoleAssumptionCredential;
+import com.netflix.dynomitemanager.dualaccount.AwsRoleAssumptionCredential;
 import com.netflix.dynomitemanager.dynomite.DynomiteProcessManager;
 import com.netflix.dynomitemanager.dynomite.DynomiteStandardTuner;
 import com.netflix.dynomitemanager.dynomite.IDynomiteProcess;
