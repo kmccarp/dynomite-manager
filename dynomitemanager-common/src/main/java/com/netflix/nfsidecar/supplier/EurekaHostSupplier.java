@@ -54,66 +54,62 @@ public class EurekaHostSupplier implements HostSupplier {
      */
     @Override
     public Supplier<List<Host>> getSupplier(final String clusterName) {
-        return new Supplier<List<Host>>() {
+        return () -> {
 
-            @Override
-            public List<Host> get() {
+            if (discoveryClient == null) {
+                LOG.error("Eureka DiscoveryClient cannot be null");
+                throw new RuntimeException("EurekaHostsSupplier needs a non-null DiscoveryClient");
+            }
 
-                if (discoveryClient == null) {
-                    LOG.error("Eureka DiscoveryClient cannot be null");
-                    throw new RuntimeException("EurekaHostsSupplier needs a non-null DiscoveryClient");
-                }
+            LOG.debug("Fetching instance list for app: " + clusterName);
 
-                LOG.debug("Fetching instance list for app: " + clusterName);
+            Application app = discoveryClient.getApplication(clusterName.toUpperCase());
+            List<Host> hosts = new ArrayList<>();
 
-                Application app = discoveryClient.getApplication(clusterName.toUpperCase());
-                List<Host> hosts = new ArrayList<Host>();
-
-                if (app == null) {
-                    LOG.warn("Cluster '{}' not found in Eureka", clusterName);
-                    return hosts;
-                }
-
-                List<InstanceInfo> ins = app.getInstances();
-
-                if (ins == null || ins.isEmpty()) {
-                    LOG.warn("Cluster '{}' found in Eureka but has no instances", clusterName);
-                    return hosts;
-                }
-
-                hosts = Lists
-                        .newArrayList(Collections2.transform(Collections2.filter(ins, new Predicate<InstanceInfo>() {
-                            @Override
-                            public boolean apply(InstanceInfo input) {
-                                return input.getStatus() == InstanceInfo.InstanceStatus.UP;
-                            }
-                        }), new Function<InstanceInfo, Host>() {
-                            @Override
-                            public Host apply(InstanceInfo info) {
-                                String[] parts = StringUtils.split(StringUtils.split(info.getHostName(), ".")[0], '-');
-
-                                Host host = new Host(info.getHostName(), info.getPort())
-                                        .addAlternateIpAddress(StringUtils
-                                                .join(new String[] { parts[1], parts[2], parts[3], parts[4] }, "."))
-                                        .addAlternateIpAddress(info.getIPAddr()).setId(info.getId());
-
-                                try {
-                                    if (info.getDataCenterInfo() instanceof AmazonInfo) {
-                                        AmazonInfo amazonInfo = (AmazonInfo) info.getDataCenterInfo();
-                                        host.setRack(amazonInfo.get(MetaDataKey.availabilityZone));
-                                    }
-                                } catch (Throwable t) {
-                                    LOG.error("Error getting rack for host " + host.getName(), t);
-                                }
-
-                                return host;
-                            }
-                        }));
-
-                LOG.debug("Found hosts in Eureka. Num hosts: " + hosts.size());
-
+            if (app == null) {
+                LOG.warn("Cluster '{}' not found in Eureka", clusterName);
                 return hosts;
             }
+
+            List<InstanceInfo> ins = app.getInstances();
+
+            if (ins == null || ins.isEmpty()) {
+                LOG.warn("Cluster '{}' found in Eureka but has no instances", clusterName);
+                return hosts;
+            }
+
+            hosts = Lists
+            .newArrayList(Collections2.transform(Collections2.filter(ins, new Predicate<InstanceInfo>() {
+                @Override
+                public boolean apply(InstanceInfo input) {
+                    return input.getStatus() == InstanceInfo.InstanceStatus.UP;
+                }
+            }), new Function<InstanceInfo, Host>() {
+                @Override
+                public Host apply(InstanceInfo info) {
+                    String[] parts = StringUtils.split(StringUtils.split(info.getHostName(), ".")[0], '-');
+
+                    Host host = new Host(info.getHostName(), info.getPort())
+                    .addAlternateIpAddress(StringUtils
+                    .join(new String[]{parts[1], parts[2], parts[3], parts[4]}, "."))
+                    .addAlternateIpAddress(info.getIPAddr()).setId(info.getId());
+
+                    try {
+                        if (info.getDataCenterInfo() instanceof AmazonInfo) {
+                            AmazonInfo amazonInfo = (AmazonInfo) info.getDataCenterInfo();
+                            host.setRack(amazonInfo.get(MetaDataKey.availabilityZone));
+                        }
+                    } catch (Throwable t) {
+                        LOG.error("Error getting rack for host " + host.getName(), t);
+                    }
+
+                    return host;
+                }
+            }));
+
+            LOG.debug("Found hosts in Eureka. Num hosts: " + hosts.size());
+
+            return hosts;
         };
     }
 
