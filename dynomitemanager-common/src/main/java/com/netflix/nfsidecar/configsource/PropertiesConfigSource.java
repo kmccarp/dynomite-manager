@@ -1,4 +1,4 @@
-package com.netflix.nfsidecar.configSource;
+package com.netflix.nfsidecar.configsource;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Preconditions;
@@ -102,7 +102,9 @@ public class PropertiesConfigSource extends AbstractConfigSource
      */
     private void clone(final Properties properties) 
     {
-        if (properties.isEmpty()) return;
+        if (properties.isEmpty()) {
+            return;
+        }
 
         synchronized (properties) 
         {
