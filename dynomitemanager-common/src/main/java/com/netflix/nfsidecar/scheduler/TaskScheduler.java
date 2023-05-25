@@ -73,22 +73,19 @@ public class TaskScheduler
         assert timer != null : "Cannot add scheduler task " + name + " as no timer is set";
         final JobDetail job = new JobDetail(name, Scheduler.DEFAULT_GROUP, taskclass);
         
-        new Thread(new Runnable(){
-            public void run()
+        new Thread(() -> {
+            try
             {
-                try
-                {
-                        sleeper.sleepQuietly(delayInSeconds * 1000L);
-                        scheduler.scheduleJob(job, timer.getTrigger());
-                }
-                catch (SchedulerException e)
-                {
-                    logger.warn("problem occurred while scheduling a job with name " + name, e);
-                }
-                catch (ParseException e)
-                {
-                    logger.warn("problem occurred while parsing a job with name " + name, e);
-                }
+                sleeper.sleepQuietly(delayInSeconds * 1000L);
+                scheduler.scheduleJob(job, timer.getTrigger());
+            }
+            catch (SchedulerException e)
+            {
+                logger.warn("problem occurred while scheduling a job with name " + name, e);
+            }
+            catch (ParseException e)
+            {
+                logger.warn("problem occurred while parsing a job with name " + name, e);
             }
         }).start();
     }
