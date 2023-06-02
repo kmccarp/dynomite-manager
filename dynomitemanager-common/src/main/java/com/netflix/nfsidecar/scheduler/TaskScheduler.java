@@ -72,14 +72,14 @@ public class TaskScheduler
     {
         assert timer != null : "Cannot add scheduler task " + name + " as no timer is set";
         final JobDetail job = new JobDetail(name, Scheduler.DEFAULT_GROUP, taskclass);
-        
+
         new Thread(new Runnable(){
             public void run()
             {
                 try
                 {
-                        sleeper.sleepQuietly(delayInSeconds * 1000L);
-                        scheduler.scheduleJob(job, timer.getTrigger());
+                    sleeper.sleepQuietly(delayInSeconds * 1000L);
+                    scheduler.scheduleJob(job, timer.getTrigger());
                 }
                 catch (SchedulerException e)
                 {
@@ -92,7 +92,7 @@ public class TaskScheduler
             }
         }).start();
     }
-    
+
     public void runTaskNow(Class<? extends Task> taskclass) throws Exception
     {
         jobFactory.guice.getInstance(taskclass).execute(null);

@@ -45,16 +45,16 @@ public interface AWSCommonConfig {
 
     @DefaultValue("us-east-1.dynomite-backup-test")
     @PropertyName(name = "dyno.backup.bucket.name") // TODO: For a common
-                                                    // default value we probably
-                                                    // have to result to defined
-                                                    // FP
+    // default value we probably
+    // have to result to defined
+    // FP
     public String getBucketName();
 
     @DefaultValue("backup")
     @PropertyName(name = "dyno.backup.s3.base_dir") // TODO: For a common
-                                                    // default value we probably
-                                                    // have to result to defined
-                                                    // FP
+    // default value we probably
+    // have to result to defined
+    // FP
     public String getBackupLocation();
 
 }

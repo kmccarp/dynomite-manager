@@ -82,33 +82,33 @@ public class EurekaHostSupplier implements HostSupplier {
                 }
 
                 hosts = Lists
-                        .newArrayList(Collections2.transform(Collections2.filter(ins, new Predicate<InstanceInfo>() {
-                            @Override
-                            public boolean apply(InstanceInfo input) {
-                                return input.getStatus() == InstanceInfo.InstanceStatus.UP;
+                .newArrayList(Collections2.transform(Collections2.filter(ins, new Predicate<InstanceInfo>() {
+                    @Override
+                    public boolean apply(InstanceInfo input) {
+                        return input.getStatus() == InstanceInfo.InstanceStatus.UP;
+                    }
+                }), new Function<InstanceInfo, Host>() {
+                    @Override
+                    public Host apply(InstanceInfo info) {
+                        String[] parts = StringUtils.split(StringUtils.split(info.getHostName(), ".")[0], '-');
+
+                        Host host = new Host(info.getHostName(), info.getPort())
+                        .addAlternateIpAddress(StringUtils
+                        .join(new String[]{parts[1], parts[2], parts[3], parts[4]}, "."))
+                        .addAlternateIpAddress(info.getIPAddr()).setId(info.getId());
+
+                        try {
+                            if (info.getDataCenterInfo() instanceof AmazonInfo) {
+                                AmazonInfo amazonInfo = (AmazonInfo) info.getDataCenterInfo();
+                                host.setRack(amazonInfo.get(MetaDataKey.availabilityZone));
                             }
-                        }), new Function<InstanceInfo, Host>() {
-                            @Override
-                            public Host apply(InstanceInfo info) {
-                                String[] parts = StringUtils.split(StringUtils.split(info.getHostName(), ".")[0], '-');
+                        } catch (Throwable t) {
+                            LOG.error("Error getting rack for host " + host.getName(), t);
+                        }
 
-                                Host host = new Host(info.getHostName(), info.getPort())
-                                        .addAlternateIpAddress(StringUtils
-                                                .join(new String[] { parts[1], parts[2], parts[3], parts[4] }, "."))
-                                        .addAlternateIpAddress(info.getIPAddr()).setId(info.getId());
-
-                                try {
-                                    if (info.getDataCenterInfo() instanceof AmazonInfo) {
-                                        AmazonInfo amazonInfo = (AmazonInfo) info.getDataCenterInfo();
-                                        host.setRack(amazonInfo.get(MetaDataKey.availabilityZone));
-                                    }
-                                } catch (Throwable t) {
-                                    LOG.error("Error getting rack for host " + host.getName(), t);
-                                }
-
-                                return host;
-                            }
-                        }));
+                        return host;
+                    }
+                }));
 
                 LOG.debug("Found hosts in Eureka. Num hosts: " + hosts.size());
 

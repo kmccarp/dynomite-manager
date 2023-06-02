@@ -37,13 +37,13 @@ public class SecurityGroupAdmin
     @POST
     public Response addACL(@QueryParam("ip") String ipAddr, @QueryParam("fromPort") int fromPort, @QueryParam("toPort") int toPort)
     {
-        if(!ipAddr.endsWith(CIDR_TAG))
+        if (!ipAddr.endsWith(CIDR_TAG))
             ipAddr += CIDR_TAG;
         try
         {
             membership.addACL(Collections.singletonList(ipAddr), fromPort, toPort);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Error while trying to add an ACL to a security group", e);
             return Response.serverError().build();
@@ -54,13 +54,13 @@ public class SecurityGroupAdmin
     @DELETE
     public Response removeACL(@QueryParam("ip") String ipAddr, @QueryParam("fromPort") int fromPort, @QueryParam("toPort") int toPort)
     {
-        if(!ipAddr.endsWith(CIDR_TAG))
+        if (!ipAddr.endsWith(CIDR_TAG))
             ipAddr += CIDR_TAG;
         try
         {
             membership.removeACL(Collections.singletonList(ipAddr), fromPort, toPort);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Error while trying to remove an ACL to a security group", e);
             return Response.serverError().build();

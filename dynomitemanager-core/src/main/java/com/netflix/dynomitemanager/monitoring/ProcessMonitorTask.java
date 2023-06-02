@@ -77,7 +77,7 @@ public class ProcessMonitorTask extends Task implements StatefulJob {
 
     @Inject
     protected ProcessMonitorTask(FloridaConfig config, InstanceState instanceState,
-                                 StorageProxy storageProxy, IDynomiteProcess dynomiteProcess) {
+    StorageProxy storageProxy, IDynomiteProcess dynomiteProcess) {
         this.config = config;
         this.instanceState = instanceState;
         this.storageProxy = storageProxy;
@@ -88,23 +88,22 @@ public class ProcessMonitorTask extends Task implements StatefulJob {
     public void execute() throws Exception {
         Stopwatch stopwatch = Stopwatch.createStarted();
         if (instanceState.getIsProcessMonitoringSuspended()) {
-        	return;
+            return;
         }
-        
+
         logger.info("Healthy " + instanceState.isHealthy());
-        
+
         instanceState.setStorageProxyProcessAlive(this.dynomiteProcess.dynomiteProcessCheck());
-        instanceState.setStorageProxyAlive(JedisUtils.isAliveWithRetry(config.getDynomiteLocalAddress(), config.getDynomiteClientPort()));            
+        instanceState.setStorageProxyAlive(JedisUtils.isAliveWithRetry(config.getDynomiteLocalAddress(), config.getDynomiteClientPort()));
         instanceState.setStorageAlive(storageProxy.isAlive());
         logger.info(String.format("ProcessMonitor state: %s, time elapsted to check (micros): %s",
-                        instanceState, stopwatch.elapsed(MICROSECONDS)));
+        instanceState, stopwatch.elapsed(MICROSECONDS)));
 
-        if((!instanceState.isStorageProxyProcessAlive())) {
+        if ((!instanceState.isStorageProxyProcessAlive())) {
             if (!instanceState.isStorageAlive()) {
                 logger.error("FATAL: Redis is down.");
                 // TODO: Take appropriate action.
-            }
-            else {
+            }else {
                 logger.info("Detected Dynomite process is not running. Restarting dynomite.");
             }
             dynomiteProcess.start();

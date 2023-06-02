@@ -17,7 +17,7 @@ public class AwsInstanceEnvIdentity implements InstanceEnvIdentity {
             this.isClassic = true;
         } else {
             this.isNonDefaultVpc = true; // our instances run under a non
-                                         // default ("persistence_*") AWS acct
+            // default ("persistence_*") AWS acct
         }
     }
 

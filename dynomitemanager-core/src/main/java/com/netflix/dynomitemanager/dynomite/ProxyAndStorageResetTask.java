@@ -27,7 +27,7 @@ public class ProxyAndStorageResetTask extends Task {
 
     @Inject
     public ProxyAndStorageResetTask(FloridaConfig config, IDynomiteProcess dynProcess, StorageProxy storageProxy,
-            Sleeper sleeper) {
+    Sleeper sleeper) {
         this.config = config;
         this.storageProxy = storageProxy;
         this.dynProcess = dynProcess;

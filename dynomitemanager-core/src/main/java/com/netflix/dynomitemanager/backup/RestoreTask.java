@@ -33,7 +33,7 @@ public class RestoreTask extends Task {
 
     @Inject
     public RestoreTask(CommonConfig config, InstanceState state, StorageProxy storageProxy,
-            IDynomiteProcess dynProcess, Sleeper sleeper, Restore restore, StorageProcessManager storageProcessMgr) {
+    IDynomiteProcess dynProcess, Sleeper sleeper, Restore restore, StorageProcessManager storageProcessMgr) {
         this.config = config;
         this.state = state;
         this.storageProxy = storageProxy;

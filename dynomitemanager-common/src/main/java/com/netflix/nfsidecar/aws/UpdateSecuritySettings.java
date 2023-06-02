@@ -44,7 +44,7 @@ public class UpdateSecuritySettings extends Task {
 
     @Inject
     public UpdateSecuritySettings(CommonConfig config, IMembership membership, IAppsInstanceFactory factory,
-            IEnvVariables envVariables) {
+    IEnvVariables envVariables) {
         this.config = config;
         this.membership = membership;
         this.factory = factory;

@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class ExponentialRetryCallable<T> extends RetryableCallable<T>
-{    
+{
     public final static long MAX_SLEEP = 240000;
     public final static long MIN_SLEEP = 200;
 
@@ -55,7 +55,7 @@ public abstract class ExponentialRetryCallable<T> extends RetryableCallable<T>
                 throw e;
             }
             catch (Exception e)
-            {                
+            {
                 delay *= 2;
                 if (delay > max)
                 {

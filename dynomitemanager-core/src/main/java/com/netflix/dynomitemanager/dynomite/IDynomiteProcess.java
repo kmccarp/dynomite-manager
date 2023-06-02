@@ -12,8 +12,8 @@ public interface IDynomiteProcess
     void start() throws IOException;
 
     void stop() throws IOException;
-    
+
     boolean dynomiteCheck();
-    
+
     boolean dynomiteProcessCheck();
 }

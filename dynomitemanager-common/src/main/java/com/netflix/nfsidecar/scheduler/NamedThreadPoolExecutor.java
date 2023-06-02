@@ -34,8 +34,8 @@ public class NamedThreadPoolExecutor extends ThreadPoolExecutor
     public NamedThreadPoolExecutor(int poolSize, String poolName, BlockingQueue<Runnable> queue)
     {
         super(poolSize, poolSize, 1000, TimeUnit.MILLISECONDS, queue,
-                new ThreadFactoryBuilder().setDaemon(true).setNameFormat(poolName + "-%d").build(),
-                new LocalRejectedExecutionHandler(queue));
+        new ThreadFactoryBuilder().setDaemon(true).setNameFormat(poolName + "-%d").build(),
+        new LocalRejectedExecutionHandler(queue));
     }
 
     private static class LocalRejectedExecutionHandler implements RejectedExecutionHandler

@@ -54,11 +54,11 @@ public class InstanceIdentity {
     private static final String DUMMY_INSTANCE_ID = "new_slot";
 
     private final ListMultimap<String, AppsInstance> locMap = Multimaps
-            .newListMultimap(new HashMap<String, Collection<AppsInstance>>(), new Supplier<List<AppsInstance>>() {
-                public List<AppsInstance> get() {
-                    return Lists.newArrayList();
-                }
-            });
+    .newListMultimap(new HashMap<String, Collection<AppsInstance>>(), new Supplier<List<AppsInstance>>() {
+        public List<AppsInstance> get() {
+            return Lists.newArrayList();
+        }
+    });
     private final IAppsInstanceFactory factory;
     private final IMembership membership;
     private final CommonConfig commonConfig;
@@ -73,7 +73,7 @@ public class InstanceIdentity {
         @Override
         public boolean apply(AppsInstance instance) {
             return (!instance.getInstanceId().equalsIgnoreCase(DUMMY_INSTANCE_ID)
-                    && !instance.getHostName().equals(myInstance.getHostName()));
+            && !instance.getHostName().equals(myInstance.getHostName()));
         }
     };
 
@@ -85,8 +85,8 @@ public class InstanceIdentity {
 
     @Inject
     public InstanceIdentity(IAppsInstanceFactory factory, IMembership membership, AWSCommonConfig aWSCommonConfig,
-            CommonConfig commonConfig, Sleeper sleeper, ITokenManager tokenManager, InstanceEnvIdentity insEnvIdentity,
-            InstanceDataRetriever retriever, IEnvVariables envVariables) throws Exception {
+    CommonConfig commonConfig, Sleeper sleeper, ITokenManager tokenManager, InstanceEnvIdentity insEnvIdentity,
+    InstanceDataRetriever retriever, IEnvVariables envVariables) throws Exception {
         this.factory = factory;
         this.membership = membership;
         this.commonConfig = commonConfig;
@@ -118,7 +118,7 @@ public class InstanceIdentity {
                 }
                 for (AppsInstance ins : factory.getAllIds(envVariables.getDynomiteClusterName())) {
                     logger.debug(String.format("[Alive] Iterating though the hosts: %s My id = [%s]",
-                            ins.getInstanceId(), ins.getId()));
+                    ins.getInstanceId(), ins.getId()));
                     if (ins.getInstanceId().equals(retriever.getInstanceId()))
                         return ins;
                 }
@@ -164,7 +164,7 @@ public class InstanceIdentity {
         } else {
             logger.info("VPC Account (local ASG): " + Arrays.toString(asgInstances.toArray()));
             logger.info("EC2 classic instances (cross-account ASG): "
-                    + Arrays.toString(crossAccountAsgInstances.toArray()));
+            + Arrays.toString(crossAccountAsgInstances.toArray()));
         }
 
         // Remove duplicates (probably there are not)
@@ -206,9 +206,9 @@ public class InstanceIdentity {
                 String payLoad = dead.getToken();
                 logger.info("Trying to grab slot {} with availability zone {}", dead.getId(), dead.getZone());
                 return factory.create(envVariables.getDynomiteClusterName(), dead.getId(), retriever.getInstanceId(),
-                        retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
-                        commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(),
-                        retriever.getRac(), dead.getVolumes(), payLoad, envVariables.getRack());
+                retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
+                commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(),
+                retriever.getRac(), dead.getVolumes(), payLoad, envVariables.getRack());
             }
             return null;
         }
@@ -229,7 +229,7 @@ public class InstanceIdentity {
             for (AppsInstance dead : allIds) {
                 // test same zone and is it is alive.
                 if (!dead.getRack().equals(envVariables.getRack()) || asgInstances.contains(dead.getInstanceId())
-                        || !isInstanceDummy(dead))
+                || !isInstanceDummy(dead))
                     continue;
                 logger.info("Found pre-generated token: " + dead.getToken());
                 // AppsInstance markAsDead = factory.create(dead.getApp() +
@@ -244,9 +244,9 @@ public class InstanceIdentity {
                 String payLoad = dead.getToken();
                 logger.info("Trying to grab slot {} with availability zone {}", dead.getId(), dead.getRack());
                 return factory.create(envVariables.getDynomiteClusterName(), dead.getId(), retriever.getInstanceId(),
-                        retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
-                        commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(), retriever.getRac(), dead.getVolumes(),
-                        payLoad, envVariables.getRack());
+                retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
+                commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(), retriever.getRac(), dead.getVolumes(),
+                payLoad, envVariables.getRack());
             }
             return null;
         }
@@ -283,16 +283,16 @@ public class InstanceIdentity {
                 rackMembershipSize = membership.getRacMembershipSize();
             }
             logger.info(String.format(
-                    "Trying to createToken with slot %d with rac count %d with rac membership size %d with dc %s",
-                    my_slot, commonConfig.getRacks().size(), rackMembershipSize, envVariables.getRegion()));
+            "Trying to createToken with slot %d with rac count %d with rac membership size %d with dc %s",
+            my_slot, commonConfig.getRacks().size(), rackMembershipSize, envVariables.getRegion()));
             // String payload = tokenManager.createToken(my_slot,
             // membership.getRacCount(), membership.getRacMembershipSize(),
             // config.getDataCenter());
             String payload = tokenManager.createToken(my_slot, rackMembershipSize, envVariables.getRack());
             return factory.create(envVariables.getDynomiteClusterName(), my_slot + hash, retriever.getInstanceId(),
-                    retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
-                    commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(), retriever.getRac(), null,
-                    payload, envVariables.getRack());
+            retriever.getPublicHostname(), commonConfig.getDynomitePort(), commonConfig.getDynomiteSecurePort(),
+            commonConfig.getDynomiteSecureStoragePort(), commonConfig.getDynomitePeerPort(), retriever.getPublicIP(), retriever.getRac(), null,
+            payload, envVariables.getRack());
         }
 
         public void forEachExecution() {
@@ -333,7 +333,7 @@ public class InstanceIdentity {
             if (!ins.getInstanceId().equals(myInstance.getInstanceId())) {
                 logger.debug("Adding node: " + ins.getInstanceId());
                 seeds.add(ins.getHostName() + ":" + ins.getPeerPort() + ":" + ins.getRack() + ":"
-                        + ins.getDatacenter() + ":" + ins.getToken());
+                + ins.getDatacenter() + ":" + ins.getToken());
             }
         }
 

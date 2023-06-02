@@ -34,15 +34,15 @@ public interface IAppsInstanceFactory
      */
     public List<AppsInstance> getAllIds(String appName);
 
-    
+
     /**
      * Return a list of Local Dynomite server nodes registered.
      * @param appName the cluster name
      * @param region the the region of the node
      * @return a list of nodes in {@code appName} and same Racks
      */
-	public List<AppsInstance> getLocalDCIds(String appName, String region);    
-    
+    public List<AppsInstance> getLocalDCIds(String appName, String region);
+
     /**
      * Return the Dynomite server node with the given {@code id}.
      * @param appName the cluster name
@@ -64,7 +64,7 @@ public interface IAppsInstanceFactory
      * @return the new node
      */
     public AppsInstance create(String app, int id, String instanceID, String hostname, int dynomitePort, int dynomiteSecurePort, int dynomiteSecureStoragePort, int peerPort, String ip, String rac,
-                               Map<String, Object> volumes, String token, String datacenter);
+    Map<String, Object> volumes, String token, String datacenter);
 
     /**
      * Delete the server node from the registry
@@ -91,7 +91,6 @@ public interface IAppsInstanceFactory
      * @param device
      */
     public void attachVolumes(AppsInstance instance, String mountPath, String device);
-
 
 
 }

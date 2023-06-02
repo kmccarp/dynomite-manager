@@ -56,14 +56,14 @@ public class ArdbRocksDbRedisCompatible {
         this.compactionStrategy = config.getRocksDBCompactionStrategy();
 
         switch (this.compactionStrategy) {
-        case "OptimizeLevelStyleCompaction":
-            break;
-        case "OptimizeUniversalStyleCompaction":
-            break;
-        case "none":
-            break;
-        default:
-            throw new IllegalArgumentException("RocksDB unsupported compaction style: " + this.compactionStrategy);
+            case "OptimizeLevelStyleCompaction":
+                break;
+            case "OptimizeUniversalStyleCompaction":
+                break;
+            case "none":
+                break;
+            default:
+                throw new IllegalArgumentException("RocksDB unsupported compaction style: " + this.compactionStrategy);
         }
 
         this.loglevel = config.getArdbLoglevel();

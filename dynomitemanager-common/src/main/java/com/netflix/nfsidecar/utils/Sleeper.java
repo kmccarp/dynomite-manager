@@ -24,5 +24,6 @@ import com.google.inject.ImplementedBy;
 public interface Sleeper
 {
     void sleep(long waitTimeMs) throws InterruptedException;
+
     void sleepQuietly(long waitTimeMs);
 }

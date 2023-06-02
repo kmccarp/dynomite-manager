@@ -65,7 +65,7 @@ public class InstanceDataDAOCassandra {
     private long lastTimeCassandraPull = 0;
     private Set<AppsInstance> appInstances;
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
-    private final Lock read  = readWriteLock.readLock();
+    private final Lock read = readWriteLock.readLock();
     private final Lock write = readWriteLock.writeLock();
     /*
      * Schema: create column family tokens with comparator=UTF8Type and
@@ -79,10 +79,10 @@ public class InstanceDataDAOCassandra {
      * {column_name: location, validation_class: UTF8Type}];
      */
     public ColumnFamily<String, String> CF_TOKENS = new ColumnFamily<String, String>(CF_NAME_TOKENS,
-            StringSerializer.get(), StringSerializer.get());
+    StringSerializer.get(), StringSerializer.get());
     // Schema: create column family locks with comparator=UTF8Type;
     public ColumnFamily<String, String> CF_LOCKS = new ColumnFamily<String, String>(CF_NAME_LOCKS,
-            StringSerializer.get(), StringSerializer.get());
+    StringSerializer.get(), StringSerializer.get());
 
     @Inject
     public InstanceDataDAOCassandra(CommonConfig commonConfig, CassCommonConfig cassCommonConfig, HostSupplier hostSupplier) throws ConnectionException {
@@ -93,18 +93,18 @@ public class InstanceDataDAOCassandra {
 
         if (BOOT_CLUSTER == null || BOOT_CLUSTER.isEmpty())
             throw new RuntimeException(
-                    "Cassandra cluster name cannot be blank. Please use getCassandraClusterName() property.");
+            "Cassandra cluster name cannot be blank. Please use getCassandraClusterName() property.");
 
         KS_NAME = cassCommonConfig.getCassandraKeyspaceName();
 
         if (KS_NAME == null || KS_NAME.isEmpty())
             throw new RuntimeException(
-                    "Cassandra Keyspace can not be blank. Please use getCassandraKeyspaceName() property.");
+            "Cassandra Keyspace can not be blank. Please use getCassandraKeyspaceName() property.");
 
         thriftPortForAstyanax = cassCommonConfig.getCassandraThriftPort();
         if (thriftPortForAstyanax <= 0)
             throw new RuntimeException(
-                    "Thrift Port for Astyanax can not be blank. Please use getCassandraThriftPort() property.");
+            "Thrift Port for Astyanax can not be blank. Please use getCassandraThriftPort() property.");
 
         this.hostSupplier = hostSupplier;
 
@@ -116,6 +116,7 @@ public class InstanceDataDAOCassandra {
         ctx.start();
         bootKeyspace = ctx.getClient();
     }
+
     private boolean isCassandraCacheExpired() {
         if (lastTimeCassandraPull + cassCommonConfig.getTokenRefreshInterval() <= System.currentTimeMillis())
             return true;
@@ -190,7 +191,7 @@ public class InstanceDataDAOCassandra {
         String lockKey = getLockingKey(instance);
         OperationResult<ColumnList<String>> result = bootKeyspace.prepareQuery(CF_LOCKS).getKey(lockKey).execute();
         if (result.getResult().size() > 0
-                && !result.getResult().getColumnByIndex(0).getName().equals(instance.getInstanceId()))
+        && !result.getResult().getColumnByIndex(0).getName().equals(instance.getInstanceId()))
             throw new Exception(String.format("Lock already taken %s", lockKey));
 
         clm = m.withRow(CF_LOCKS, lockKey);
@@ -199,7 +200,7 @@ public class InstanceDataDAOCassandra {
         Thread.sleep(100);
         result = bootKeyspace.prepareQuery(CF_LOCKS).getKey(lockKey).execute();
         if (result.getResult().size() == 1
-                && result.getResult().getColumnByIndex(0).getName().equals(instance.getInstanceId())) {
+        && result.getResult().getColumnByIndex(0).getName().equals(instance.getInstanceId())) {
             logger.info("Got lock " + lockKey);
             return;
         } else
@@ -222,7 +223,7 @@ public class InstanceDataDAOCassandra {
 
         // Delete the row
         String key = findKey(instance.getApp(), String.valueOf(instance.getId()), instance.getDatacenter(),
-                instance.getRack());
+        instance.getRack());
         if (key == null)
             return; // don't fail it
 
@@ -270,14 +271,14 @@ public class InstanceDataDAOCassandra {
         try {
 
             final String selectClause = String.format(
-                    "SELECT * FROM %s USING CONSISTENCY LOCAL_QUORUM WHERE %s = '%s' ", CF_NAME_TOKENS, CN_APPID, app);
+            "SELECT * FROM %s USING CONSISTENCY LOCAL_QUORUM WHERE %s = '%s' ", CF_NAME_TOKENS, CN_APPID, app);
             logger.debug(selectClause);
 
             final ColumnFamily<String, String> CF_TOKENS_NEW = ColumnFamily.newColumnFamily(KS_NAME,
-                    StringSerializer.get(), StringSerializer.get());
+            StringSerializer.get(), StringSerializer.get());
 
             OperationResult<CqlResult<String, String>> result = bootKeyspace.prepareQuery(CF_TOKENS_NEW)
-                    .withCql(selectClause).execute();
+            .withCql(selectClause).execute();
 
             for (Row<String, String> row : result.getResult().getRows())
                 set.add(transform(row.getColumns()));
@@ -307,15 +308,15 @@ public class InstanceDataDAOCassandra {
     public String findKey(String app, String id, String location, String datacenter) {
         try {
             final String selectClause = String.format(
-                    "SELECT * FROM %s USING CONSISTENCY LOCAL_QUORUM WHERE %s = '%s' and %s = '%s' and %s = '%s' and %s = '%s' ",
-                    "tokens", CN_APPID, app, CN_ID, id, CN_LOCATION, location, CN_DC, datacenter);
+            "SELECT * FROM %s USING CONSISTENCY LOCAL_QUORUM WHERE %s = '%s' and %s = '%s' and %s = '%s' and %s = '%s' ",
+            "tokens", CN_APPID, app, CN_ID, id, CN_LOCATION, location, CN_DC, datacenter);
             logger.info(selectClause);
 
             final ColumnFamily<String, String> CF_INSTANCES_NEW = ColumnFamily.newColumnFamily(KS_NAME,
-                    StringSerializer.get(), StringSerializer.get());
+            StringSerializer.get(), StringSerializer.get());
 
             OperationResult<CqlResult<String, String>> result = bootKeyspace.prepareQuery(CF_INSTANCES_NEW)
-                    .withCql(selectClause).execute();
+            .withCql(selectClause).execute();
 
             if (result == null || result.getResult().getRows().size() == 0)
                 return null;
@@ -325,7 +326,7 @@ public class InstanceDataDAOCassandra {
 
         } catch (Exception e) {
             logger.warn("Caught an Unknown Exception during find a row matching cluster[" + app + "], id[" + id
-                    + "], and region[" + datacenter + "]  ... -> " + e.getMessage());
+            + "], and region[" + datacenter + "]  ... -> " + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -374,13 +375,13 @@ public class InstanceDataDAOCassandra {
 
         logger.info("BOOT_CLUSTER = {}, KS_NAME = {}", BOOT_CLUSTER, KS_NAME);
         return new AstyanaxContext.Builder().forCluster(BOOT_CLUSTER).forKeyspace(KS_NAME)
-                .withAstyanaxConfiguration(
-                        new AstyanaxConfigurationImpl().setDiscoveryType(NodeDiscoveryType.DISCOVERY_SERVICE))
-                .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
-                        .setMaxConnsPerHost(3).setPort(thriftPortForAstyanax))
-                .withHostSupplier(hostSupplier.getSupplier(BOOT_CLUSTER))
-                .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
-                .buildKeyspace(ThriftFamilyFactory.getInstance());
+        .withAstyanaxConfiguration(
+        new AstyanaxConfigurationImpl().setDiscoveryType(NodeDiscoveryType.DISCOVERY_SERVICE))
+        .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
+        .setMaxConnsPerHost(3).setPort(thriftPortForAstyanax))
+        .withHostSupplier(hostSupplier.getSupplier(BOOT_CLUSTER))
+        .withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
+        .buildKeyspace(ThriftFamilyFactory.getInstance());
 
     }
 
@@ -388,13 +389,13 @@ public class InstanceDataDAOCassandra {
 
         logger.info("BOOT_CLUSTER = {}, KS_NAME = {}", BOOT_CLUSTER, KS_NAME);
         return new AstyanaxContext.Builder().forCluster(BOOT_CLUSTER).forKeyspace(KS_NAME)
-                .withAstyanaxConfiguration(
-                        new AstyanaxConfigurationImpl().setDiscoveryType(NodeDiscoveryType.DISCOVERY_SERVICE)
-                                .setConnectionPoolType(ConnectionPoolType.ROUND_ROBIN))
-                .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
-                        .setMaxConnsPerHost(3).setPort(thriftPortForAstyanax))
-                .withHostSupplier(getSupplier()).withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
-                .buildKeyspace(ThriftFamilyFactory.getInstance());
+        .withAstyanaxConfiguration(
+        new AstyanaxConfigurationImpl().setDiscoveryType(NodeDiscoveryType.DISCOVERY_SERVICE)
+        .setConnectionPoolType(ConnectionPoolType.ROUND_ROBIN))
+        .withConnectionPoolConfiguration(new ConnectionPoolConfigurationImpl("MyConnectionPool")
+        .setMaxConnsPerHost(3).setPort(thriftPortForAstyanax))
+        .withHostSupplier(getSupplier()).withConnectionPoolMonitor(new CountingConnectionPoolMonitor())
+        .buildKeyspace(ThriftFamilyFactory.getInstance());
 
     }
 
@@ -408,11 +409,11 @@ public class InstanceDataDAOCassandra {
                 List<Host> hosts = new ArrayList<Host>();
 
                 List<String> cassHostnames = new ArrayList<String>(
-                        Arrays.asList(StringUtils.split(cassCommonConfig.getCassandraSeeds(), ",")));
+                Arrays.asList(StringUtils.split(cassCommonConfig.getCassandraSeeds(), ",")));
 
                 if (cassHostnames.size() == 0)
                     throw new RuntimeException(
-                            "Cassandra Host Names can not be blank. At least one host is needed. Please use getCassandraSeeds() property.");
+                    "Cassandra Host Names can not be blank. At least one host is needed. Please use getCassandraSeeds() property.");
 
                 for (String cassHost : cassHostnames) {
                     logger.info("Adding Cassandra Host = {}", cassHost);

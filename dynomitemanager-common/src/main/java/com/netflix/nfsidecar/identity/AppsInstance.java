@@ -39,7 +39,7 @@ public class AppsInstance implements Serializable
     private String token;
     //Handles Storage objects
     private Map<String, Object> volumes;
-    
+
     public String getApp()
     {
         return app;
@@ -84,7 +84,7 @@ public class AppsInstance implements Serializable
     {
         return hostname;
     }
-    
+
     public String getHostIP()
     {
         return publicip;
@@ -130,14 +130,14 @@ public class AppsInstance implements Serializable
     public String toString()
     {
         return String.format("Hostname: %s, InstanceId: %s, APP_NAME: %s, RAC : %s Location %s, Id: %s: Token: %s", getHostName(), getInstanceId(), getApp(), getZone(), getDatacenter(), getId(),
-                getToken());
+        getToken());
     }
 
     public String getDatacenter()
     {
         return location;
     }
-    
+
     public void setDatacenter(String dc)
     {
         this.location = dc;
@@ -163,30 +163,46 @@ public class AppsInstance implements Serializable
         this.outOfService = outOfService;
     }
 
-    public String getRack() 
+    public String getRack()
     {
-    	return rack;
+        return rack;
     }
-    
+
     public void setRack(String rack)
     {
-        this.rack = rack;	
+        this.rack = rack;
     }
 
-    public void setDynomitePort(int port) { this.dynomitePort = port; }
+    public void setDynomitePort(int port) {
+        this.dynomitePort = port;
+    }
 
-    public int getDynomitePort() { return this.dynomitePort; }
+    public int getDynomitePort() {
+        return this.dynomitePort;
+    }
 
-    public void setDynomiteSecurePort(int port) { this.dynomiteSecurePort = port; }
+    public void setDynomiteSecurePort(int port) {
+        this.dynomiteSecurePort = port;
+    }
 
-    public int getDynomiteSecurePort() { return this.dynomiteSecurePort; }
+    public int getDynomiteSecurePort() {
+        return this.dynomiteSecurePort;
+    }
 
-    public void setDynomiteSecureStoragePort(int port) { this.dynomiteSecureStoragePort = port; }
+    public void setDynomiteSecureStoragePort(int port) {
+        this.dynomiteSecureStoragePort = port;
+    }
 
-    public int getDynomiteSecureStoragePort() { return this.dynomiteSecureStoragePort; }
+    public int getDynomiteSecureStoragePort() {
+        return this.dynomiteSecureStoragePort;
+    }
 
-    public void setPeerPort(int port) { this.peerPort = port; }
+    public void setPeerPort(int port) {
+        this.peerPort = port;
+    }
 
-    public int getPeerPort() { return this.peerPort; }
+    public int getPeerPort() {
+        return this.peerPort;
+    }
 
 }

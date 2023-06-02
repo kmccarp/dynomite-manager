@@ -25,6 +25,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ClearCredential.class)
 public interface ICredential
 {
-    
+
     public AWSCredentialsProvider getAwsCredentialProvider();
 }

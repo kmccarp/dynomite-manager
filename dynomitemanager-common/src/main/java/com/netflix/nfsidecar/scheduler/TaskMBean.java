@@ -22,6 +22,8 @@ package com.netflix.nfsidecar.scheduler;
 public interface TaskMBean
 {
     public int getErrorCount();
+
     public int getExecutionCount();
+
     public String getName();
 }

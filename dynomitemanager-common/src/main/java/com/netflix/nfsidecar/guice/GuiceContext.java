@@ -12,17 +12,18 @@ public class GuiceContext {
     private static final Logger logger = LoggerFactory.getLogger(GuiceContext.class);
     private static final GuiceContext INSTANCE = new GuiceContext();
     private Injector injector;
-    
-    private GuiceContext(){}
-    
+
+    private GuiceContext() {
+    }
+
     /*
      * IMPORTANT:  must be invoked when the web app starts (@see PriamLifecycleListener.initialize())
      */
     public static void setInjector(Injector val) {
         if (INSTANCE.injector == null) {
-            synchronized(GuiceContext.class) {
+            synchronized (GuiceContext.class) {
                 if (INSTANCE.injector == null) {
-                    INSTANCE.injector = val;                    
+                    INSTANCE.injector = val;
                 }
             }
         }
@@ -34,9 +35,9 @@ public class GuiceContext {
         if (INSTANCE.injector == null) {
             throw new IllegalStateException("The injector is null.  It should have been set when the web app starts (in some listener such as PriamLifecycleListener.initialize()");
         }
-        
+
         logger.info("The injector provided has id: " + INSTANCE.injector.hashCode());
-        
+
         return INSTANCE.injector;
-    }    
+    }
 }

@@ -21,11 +21,11 @@ public class InstanceEnvVariables implements IEnvVariables {
     @Override
     public String getDynomiteClusterName() {
         String clusterName = System.getenv("NETFLIX_APP");
-/*        if (StringUtils.isBlank(clusterName)) {
-            logger.warn("Cluster name variable not defined. Falling back to FP " + config.getDynomiteClusterName());
-            clusterName = config.getDynomiteClusterName();
-        }
-        */
+        /*        if (StringUtils.isBlank(clusterName)) {
+                    logger.warn("Cluster name variable not defined. Falling back to FP " + config.getDynomiteClusterName());
+                    clusterName = config.getDynomiteClusterName();
+                }
+                */
         return clusterName;
     }
 

@@ -47,9 +47,9 @@ public class S3Restore implements Restore {
     @Inject
     private AWSCommonConfig commonConfig;
 
-    @Inject 
+    @Inject
     private FloridaConfig floridaConfig;
-    
+
     @Inject
     private ICredential cred;
 
@@ -69,7 +69,7 @@ public class S3Restore implements Restore {
             try {
                 /* construct the key for the backup data */
                 String keyName = commonConfig.getBackupLocation() + "/" + iid.getInstance().getDatacenter() + "/"
-                        + iid.getInstance().getRack() + "/" + iid.getInstance().getToken() + "/" + time;
+                + iid.getInstance().getRack() + "/" + iid.getInstance().getToken() + "/" + time;
 
                 logger.info("S3 Bucket Name: " + commonConfig.getBucketName());
                 logger.info("Key in Bucket: " + keyName);
@@ -97,7 +97,7 @@ public class S3Restore implements Restore {
             } catch (AmazonServiceException ase) {
 
                 logger.error(
-                        "AmazonServiceException;" + " request made it to Amazon S3, but was rejected with an error ");
+                "AmazonServiceException;" + " request made it to Amazon S3, but was rejected with an error ");
                 logger.error("Error Message:    " + ase.getMessage());
                 logger.error("HTTP Status Code: " + ase.getStatusCode());
                 logger.error("AWS Error Code:   " + ase.getErrorCode());
@@ -106,7 +106,7 @@ public class S3Restore implements Restore {
 
             } catch (AmazonClientException ace) {
                 logger.error("AmazonClientException;" + " the client encountered "
-                        + "an internal error while trying to " + "communicate with S3, ");
+                + "an internal error while trying to " + "communicate with S3, ");
                 logger.error("Error Message: " + ace.getMessage());
             } catch (IOException io) {
                 logger.error("File storing error: " + io.getMessage());

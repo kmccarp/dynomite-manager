@@ -36,34 +36,34 @@ public class AwsRoleAssumptionCredential implements ICredential {
                      */
                     if (this.insEnvIdentity.isClassic()) {
                         roleArn = this.config.getVpcAWSRoleAssumptionArn(); // Env
-                                                                            // is
-                                                                            // EC2
-                                                                            // classic
-                                                                            // -->
-                                                                            // IAM
-                                                                            // assumed
-                                                                            // role
-                                                                            // for
-                                                                            // VPC
-                                                                            // created
+                        // is
+                        // EC2
+                        // classic
+                        // -->
+                        // IAM
+                        // assumed
+                        // role
+                        // for
+                        // VPC
+                        // created
                     } else {
                         roleArn = this.config.getClassicAWSRoleAssumptionArn(); // Env
-                                                                                // is
-                                                                                // VPC
-                                                                                // -->
-                                                                                // IAM
-                                                                                // assumed
-                                                                                // role
-                                                                                // for
-                                                                                // EC2
-                                                                                // classic
-                                                                                // created
+                        // is
+                        // VPC
+                        // -->
+                        // IAM
+                        // assumed
+                        // role
+                        // for
+                        // EC2
+                        // classic
+                        // created
                     }
 
                     //
                     if (roleArn == null || roleArn.isEmpty())
                         throw new NullPointerException(
-                                "Role ARN is null or empty probably due to missing config entry");
+                        "Role ARN is null or empty probably due to missing config entry");
 
                     /**
                      * Get handle to an implementation that uses AWS Security
@@ -73,13 +73,13 @@ public class AwsRoleAssumptionCredential implements ICredential {
                      */
                     try {
                         this.stsSessionCredentialsProvider = new STSAssumeRoleSessionCredentialsProvider(
-                                this.cred.getAwsCredentialProvider(), roleArn, AWS_ROLE_ASSUMPTION_SESSION_NAME);
+                        this.cred.getAwsCredentialProvider(), roleArn, AWS_ROLE_ASSUMPTION_SESSION_NAME);
 
                     } catch (Exception ex) {
                         throw new IllegalStateException(
-                                "Exception in getting handle to AWS Security Token Service (STS).  Msg: "
-                                        + ex.getLocalizedMessage(),
-                                ex);
+                        "Exception in getting handle to AWS Security Token Service (STS).  Msg: "
+                        + ex.getLocalizedMessage(),
+                        ex);
                     }
 
                 }

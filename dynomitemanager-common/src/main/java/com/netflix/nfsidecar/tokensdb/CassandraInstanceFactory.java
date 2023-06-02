@@ -31,11 +31,11 @@ public class CassandraInstanceFactory implements IAppsInstanceFactory
 
     @Inject
     public CassandraInstanceFactory(CommonConfig config, InstanceDataDAOCassandra dao, IEnvVariables envVariables) {
-    	this.config = config;
-    	this.dao = dao;
-    	this.envVariables = envVariables;
+        this.config = config;
+        this.dao = dao;
+        this.envVariables = envVariables;
     }
-    
+
     public List<AppsInstance> getAllIds(String appName)
     {
         List<AppsInstance> return_ = new ArrayList<AppsInstance>();
@@ -46,7 +46,7 @@ public class CassandraInstanceFactory implements IAppsInstanceFactory
         sort(return_);
         return return_;
     }
-    
+
     public List<AppsInstance> getLocalDCIds(String appName, String region)
     {
         List<AppsInstance> return_ = new ArrayList<AppsInstance>();

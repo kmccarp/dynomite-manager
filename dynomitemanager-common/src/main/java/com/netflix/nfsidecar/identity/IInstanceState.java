@@ -9,7 +9,7 @@ public interface IInstanceState {
     public boolean getYmlWritten();
 
     public void setYmlWritten(boolean b);
-    
+
     public void setStorageProxyAlive(boolean isStorageProxyAlive);
 
 }

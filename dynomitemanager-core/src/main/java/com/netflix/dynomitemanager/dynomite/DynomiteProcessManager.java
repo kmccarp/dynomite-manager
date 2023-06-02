@@ -43,7 +43,7 @@ public class DynomiteProcessManager extends Task implements IDynomiteProcess, He
 
     @Inject
     public DynomiteProcessManager(FloridaConfig config, Sleeper sleeper, IInstanceState instanceState,
-            IDynomiteProcess dynProcess) {
+    IDynomiteProcess dynProcess) {
         this.config = config;
         this.sleeper = sleeper;
         this.instanceState = instanceState;
@@ -62,7 +62,7 @@ public class DynomiteProcessManager extends Task implements IDynomiteProcess, He
     @Override
     public void execute() throws Exception {
         dynomiteHealth = dynomiteProcessCheck()
-                && JedisUtils.isAliveWithRetry(config.getDynomiteLocalAddress(), config.getDynomiteClientPort());
+        && JedisUtils.isAliveWithRetry(config.getDynomiteLocalAddress(), config.getDynomiteClientPort());
     }
 
     public void start() throws IOException {
@@ -152,7 +152,7 @@ public class DynomiteProcessManager extends Task implements IDynomiteProcess, He
                 instanceState.setStorageProxyAlive(false);
             } else {
                 logger.error("Unable to stop Dynomite server with script " + config.getDynomiteStopScript()
-                        + " Error code: {}", code);
+                + " Error code: {}", code);
                 logProcessOutput(stopper);
             }
         } catch (Exception e) {
@@ -228,7 +228,7 @@ public class DynomiteProcessManager extends Task implements IDynomiteProcess, He
         Process process = null;
         try {
             String cmd = String.format("ps -ef | grep  '[/]apps/%1$s/bin/%1$s'", config.getDynomiteProcessName());
-            String[] cmdArray = { "/bin/sh", "-c", cmd };
+            String[] cmdArray = {"/bin/sh", "-c", cmd};
             logger.debug("Running checkProxyProcess command: " + cmd);
 
             // This returns pid for the Dynomite process

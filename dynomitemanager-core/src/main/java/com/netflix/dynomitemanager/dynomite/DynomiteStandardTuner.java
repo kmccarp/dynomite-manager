@@ -40,8 +40,8 @@ public class DynomiteStandardTuner implements ProcessTuner {
 
     @Inject
     public DynomiteStandardTuner(FloridaConfig floridaConfig, CommonConfig commonConfig, InstanceIdentity ii,
-            IInstanceState instanceState, StorageProxy storageProxy, IEnvVariables envVariables,
-            InstanceDataRetriever instanceDataRetriever) {
+    IInstanceState instanceState, StorageProxy storageProxy, IEnvVariables envVariables,
+    InstanceDataRetriever instanceDataRetriever) {
         this.floridaConfig = floridaConfig;
         this.commonConfig = commonConfig;
         this.ii = ii;
@@ -107,7 +107,7 @@ public class DynomiteStandardTuner implements ProcessTuner {
             entries.put("stats_listen", "127.0.0.1:" + commonConfig.getDynomiteStatsPort());
         else
             entries.put("stats_listen", "0.0.0.0:" + commonConfig.getDynomiteStatsPort());
-        
+
         entries.put("dyn_seed_provider", floridaConfig.getDynomiteSeedProvider());
         entries.put("gos_interval", floridaConfig.getDynomiteGossipInterval());
         entries.put("hash", floridaConfig.getDynomiteHashAlgorithm());
@@ -128,14 +128,13 @@ public class DynomiteStandardTuner implements ProcessTuner {
         if (!floridaConfig.getDynomiteHashtag().isEmpty()) {
             if (floridaConfig.getDynomiteHashtag().length() != 2) {
                 logger.error("Hashtag must be of length 2. Provided hashtag: " + floridaConfig.getDynomiteHashtag()
-                        + " has length: " + floridaConfig.getDynomiteHashtag().length());
+                + " has length: " + floridaConfig.getDynomiteHashtag().length());
                 logger.error("Not setting any hashtag");
                 throw new RuntimeException("Hashtag is larger than 2 characters");
             } else {
-                entries.put("hash_tag", floridaConfig.getDynomiteHashtag());                
+                entries.put("hash_tag", floridaConfig.getDynomiteHashtag());
             }
-        }
-        else {
+        }else {
             logger.info("no hashtag FP defined");
         }
 

@@ -29,14 +29,14 @@ public class Florida implements WebApplicationInitializer {
 
     public static void main(String[] args) throws Exception {
         InjectorBuilder.fromModules(
-                new FloridaModule(),
-                new Archaius2JettyModule(),
-                new ArchaiusModule() {
-                    @Override
-                    protected void configureArchaius() {
-                        bindApplicationConfigurationOverrideResource("laptop");
-                    }
-                }).createInjector().awaitTermination();
+        new FloridaModule(),
+        new Archaius2JettyModule(),
+        new ArchaiusModule() {
+            @Override
+            protected void configureArchaius() {
+                bindApplicationConfigurationOverrideResource("laptop");
+            }
+        }).createInjector().awaitTermination();
     }
 
     @Override

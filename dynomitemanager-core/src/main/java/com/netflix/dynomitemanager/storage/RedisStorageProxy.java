@@ -139,7 +139,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                 sleeper.sleepQuietly(1000);
             } catch (JedisConnectionException e) {
                 logger.warn("JedisConnection Exception in SLAVEOF peer " + peer + " port " + port + " Exception: "
-                        + e.getMessage());
+                + e.getMessage());
                 logger.warn("Trying to reconnect...");
                 localRedisDisconnect();
                 localRedisConnect();
@@ -243,7 +243,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
 
                 for (String line : result) {
                     if ((line.startsWith("aof_rewrite_in_progress") && config.persistenceType().equals("aof"))
-                            || (line.startsWith("rdb_bgsave_in_progress") && !config.persistenceType().equals("aof"))) {
+                    || (line.startsWith("rdb_bgsave_in_progress") && !config.persistenceType().equals("aof"))) {
                         String[] items = line.split(":");
                         pendingPersistence = items[1].trim();
                         if (pendingPersistence.equals("0")) {
@@ -334,7 +334,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
         currentAlivePeer.selectedPeer = peer;
         currentAlivePeer.selectedJedis = peerJedis;
         String s = peerJedis.info(); // Parsing the info command on the peer
-                                     // node
+        // node
         RedisInfoParser infoParser = new RedisInfoParser();
         InputStreamReader reader = new InputStreamReader(new ByteArrayInputStream(s.getBytes()));
         try {
@@ -370,12 +370,12 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
         Jedis peerJedis = null;
 
         for (String peer : peers) { // Looking into the peers with the same
-                                    // token
+            // token
             logger.info("Peer node [" + peer + "] has the same token!");
             peerJedis = JedisUtils.connect(peer, REDIS_PORT);
             if (peerJedis != null && isAlive()) { // Checking if there are
-                                                  // peers, and if so if they
-                                                  // are alive
+                // peers, and if so if they
+                // are alive
 
                 AlivePeer currentAlivePeer = peerNodeSelection(peer, peerJedis);
 
@@ -451,7 +451,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                 // larger than the previous diff.
                 if (previousDiff < diff) {
                     logger.info("Previous diff (" + previousDiff + ") was smaller than current diff (" + diff
-                            + ") ---> Retry effort: " + retry);
+                    + ") ---> Retry effort: " + retry);
                     retry++;
                     if (retry == 10) {
                         logger.error("Reached 10 consecutive retries, peer syncing cannot complete");
@@ -571,7 +571,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
         Long diff = Math.abs(masterOffset - slaveOffset);
 
         logger.info("masterOffset: " + masterOffset + " slaveOffset: " + slaveOffset + " current Diff: " + diff
-                + " allowable diff: " + config.getAllowableBytesSyncDiff());
+        + " allowable diff: " + config.getAllowableBytesSyncDiff());
 
         // Allowable bytes sync diff can be configured by a Fast Property.
         // If the difference is very small, then we return zero.
@@ -602,7 +602,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
 
         if (config.getRedisCompatibleEngine().equals(ArdbRocksDbRedisCompatible.DYNO_ARDB)) {
             ArdbRocksDbRedisCompatible rocksDb = new ArdbRocksDbRedisCompatible(storeMaxMem, config);
-           
+
             rocksDb.updateConfiguration(ArdbRocksDbRedisCompatible.DYNO_ARDB_CONF_PATH);
         } else {
 
@@ -635,7 +635,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                     isComment = true;
                     String withoutHash = line.substring(1);
                     if (!withoutHash.matches(REDIS_CONF_SAVE_SCHEDULE) && !withoutHash.matches(REDIS_CONF_UNIXSOCKET)
-                            && !withoutHash.matches(REDIS_CONF_UNIXSOCKETPERM)) {
+                    && !withoutHash.matches(REDIS_CONF_UNIXSOCKETPERM)) {
                         continue;
                     }
                     line = withoutHash;
@@ -685,9 +685,9 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                 }
 
                 if (line.matches(REDIS_CONF_ZSET_MAXZIPLISTVALUE) && config.getRedisMaxZsetZiplistValue() != -1) {
-                        String zsetMaxZiplistValue =  "zset-max-ziplist-value " + config.getRedisMaxZsetZiplistValue();
-                        logger.info("Updating Redis property: " + zsetMaxZiplistValue);
-                        lines.set(i, zsetMaxZiplistValue);
+                    String zsetMaxZiplistValue = "zset-max-ziplist-value " + config.getRedisMaxZsetZiplistValue();
+                    logger.info("Updating Redis property: " + zsetMaxZiplistValue);
+                    lines.set(i, zsetMaxZiplistValue);
                 }
                 // Persistence configuration
                 if (config.isPersistenceEnabled() && config.persistenceType().equals("aof")) {
@@ -705,10 +705,10 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                         lines.set(i, autoAofRewritePercentage);
                     } else if (line.matches(REDIS_CONF_SAVE_SCHEDULE)) {
                         String saveSchedule = "# save 60 10000"; // if we select
-                                                                 // AOF, it is
-                                                                 // better to
-                                                                 // stop
-                                                                 // RDB
+                        // AOF, it is
+                        // better to
+                        // stop
+                        // RDB
                         logger.info("Updating Redis property: " + saveSchedule);
                         lines.set(i, saveSchedule);
                     }
@@ -720,20 +720,20 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
                     } else if (line.matches(REDIS_CONF_SAVE_SCHEDULE) && !saveReplaced) {
                         saveReplaced = true;
                         String saveSchedule = "save 60 10000"; // after 60 sec
-                                                               // if at
-                                                               // least 10000
-                                                               // keys
-                                                               // changed
+                        // if at
+                        // least 10000
+                        // keys
+                        // changed
                         logger.info("Updating Redis property: " + saveSchedule);
                         lines.set(i, saveSchedule);
                     } else if (line.matches(REDIS_CONF_APPENDONLY)) { // if we
-                                                                      // select
-                                                                      // RDB,
-                                                                      // it is
-                                                                      // better
-                                                                      // to
-                                                                      // stop
-                                                                      // AOF
+                        // select
+                        // RDB,
+                        // it is
+                        // better
+                        // to
+                        // stop
+                        // AOF
                         String appendOnly = "appendonly no";
                         logger.info("Updating Redis property: " + appendOnly);
                         lines.set(i, appendOnly);
@@ -788,7 +788,7 @@ public class RedisStorageProxy extends Task implements StorageProxy, HealthIndic
         }
 
         String errMsg = String.format("Could not extract total mem using pattern %s from:\n%s ", MEMINFO_PATTERN,
-                memInfo);
+        memInfo);
         logger.error(errMsg);
         throw new RuntimeException(errMsg);
     }

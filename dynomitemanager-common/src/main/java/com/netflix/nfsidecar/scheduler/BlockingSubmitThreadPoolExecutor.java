@@ -62,8 +62,7 @@ public class BlockingSubmitThreadPoolExecutor extends ThreadPoolExecutor
                     {
                         Thread.sleep(DEFAULT_SLEEP);
                         timeout += DEFAULT_SLEEP;
-                    }
-                    else
+                    }else
                     {
                         throw new RuntimeException("Timed out because TPE is too busy...");
                     }
@@ -100,8 +99,7 @@ public class BlockingSubmitThreadPoolExecutor extends ThreadPoolExecutor
                     Thread.sleep(DEFAULT_SLEEP);
                     timeout += DEFAULT_SLEEP;
                     logger.debug("After Sleeping for empty: {}, Count: {}", +queue.size(), active.get());
-                }
-                else
+                }else
                 {
                     throw new RuntimeException("Timed out because TPE is too busy...");
                 }

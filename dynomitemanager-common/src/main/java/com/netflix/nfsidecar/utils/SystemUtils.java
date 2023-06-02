@@ -77,12 +77,11 @@ public class SystemUtils
     public static void cleanupDir(String dirPath, List<String> childdirs) throws IOException
     {
         if (childdirs == null || childdirs.size() == 0)
-            FileUtils.cleanDirectory(new File(dirPath));
-        else
+            FileUtils.cleanDirectory(new File(dirPath));else
         {
             for (String cdir : childdirs)
                 FileUtils.cleanDirectory(new File(dirPath + "/" + cdir));
         }
     }
-  
+
 }

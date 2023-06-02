@@ -59,7 +59,7 @@ public class RedisInfoMetricsTask extends Task {
     @Override
     public void execute() throws Exception {
 
-        Jedis jedis = jedisFactory.newInstance(storageProxy.getIpAddress(),storageProxy.getPort());
+        Jedis jedis = jedisFactory.newInstance(storageProxy.getIpAddress(), storageProxy.getPort());
         try {
             jedis.connect();
             String s = jedis.info();

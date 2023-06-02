@@ -68,8 +68,8 @@ public class FloridaServer {
 
     @Inject
     public FloridaServer(FloridaConfig floridaConfig, CommonConfig commonConfig, TaskScheduler scheduler,
-            InstanceIdentity id, Sleeper sleeper, DynomiteYamlTask tuneTask, InstanceState state,
-            IDynomiteProcess dynProcess, StorageProcessManager storageProcess, StorageProxy storageProxy) {
+    InstanceIdentity id, Sleeper sleeper, DynomiteYamlTask tuneTask, InstanceState state,
+    IDynomiteProcess dynProcess, StorageProcessManager storageProcess, StorageProxy storageProxy) {
         this.floridaConfig = floridaConfig;
         this.commonConfig = commonConfig;
         this.scheduler = scheduler;
@@ -90,9 +90,9 @@ public class FloridaServer {
         // Set Fast Property callbacks for dynamic updates.
         DynamicPropertyFactory propertyFactory = DynamicPropertyFactory.getInstance();
         this.readConsistencyFP =
-                propertyFactory.getStringProperty(
-                        "florida.dyno.read.consistency", floridaConfig.getDynomiteReadConsistency());
-        Runnable updateReadConsitencyFP = ()-> {
+        propertyFactory.getStringProperty(
+        "florida.dyno.read.consistency", floridaConfig.getDynomiteReadConsistency());
+        Runnable updateReadConsitencyFP = () -> {
             logger.info("Updating FP: " + this.readConsistencyFP.getName());
             if (!DynomiteRest.sendCommand("/set_consistency/read/" + floridaConfig.getDynomiteReadConsistency())) {
                 logger.error("REST call to Dynomite for read consistency failed --> using the default");
@@ -101,9 +101,9 @@ public class FloridaServer {
         this.readConsistencyFP.addCallback(updateReadConsitencyFP);
 
         this.writeConsistencyFP =
-                propertyFactory.getStringProperty(
-                        "florida.dyno.write.consistency", floridaConfig.getDynomiteWriteConsistency());
-        Runnable updateWriteConsitencyFP = ()-> {
+        propertyFactory.getStringProperty(
+        "florida.dyno.write.consistency", floridaConfig.getDynomiteWriteConsistency());
+        Runnable updateWriteConsitencyFP = () -> {
             logger.info("Updating FP: " + this.writeConsistencyFP.getName());
             if (!DynomiteRest.sendCommand("/set_consistency/write/" + floridaConfig.getDynomiteWriteConsistency())) {
                 logger.error("REST call to Dynomite for write consistency failed --> using the default");
@@ -143,7 +143,7 @@ public class FloridaServer {
             }
 
             scheduler.addTask(UpdateSecuritySettings.JOBNAME, UpdateSecuritySettings.class,
-                    UpdateSecuritySettings.getTimer(id));
+            UpdateSecuritySettings.getTimer(id));
         }
 
         // Invoking the task directly as any errors in this task
@@ -210,7 +210,7 @@ public class FloridaServer {
         // needed.
         scheduler.addTask(ProcessMonitorTask.JOBNAME, ProcessMonitorTask.class, ProcessMonitorTask.getTimer());
         scheduler.addTask(DynomiteProcessManager.JOB_TASK_NAME, DynomiteProcessManager.class,
-                DynomiteProcessManager.getTimer());
+        DynomiteProcessManager.getTimer());
 
         scheduler.addTask(RedisStorageProxy.JOB_TASK_NAME, RedisStorageProxy.class, RedisStorageProxy.getTimer());
 

@@ -23,7 +23,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Ordering;
 
 public class TokenManager implements ITokenManager
-{    
+{
     public static final BigInteger MINIMUM_TOKEN = BigInteger.ZERO;
     //Currently using murmur so max value is 2^32 - 1
     public static final BigInteger MAXIMUM_TOKEN = new BigInteger("2").pow(32).add(new BigInteger("-1"));
@@ -36,7 +36,8 @@ public class TokenManager implements ITokenManager
      * @param offset added to token
      * @return MAXIMUM_TOKEN / size * position + offset, if <= MAXIMUM_TOKEN, otherwise wrap around the MINIMUM_TOKEN
      */
-    @VisibleForTesting BigInteger initialToken(int size, int position, int offset)
+    @VisibleForTesting
+    BigInteger initialToken(int size, int position, int offset)
     {
         Preconditions.checkArgument(size > 0, "size must be > 0");
         Preconditions.checkArgument(offset >= 0, "offset must be >= 0");
@@ -46,8 +47,8 @@ public class TokenManager implements ITokenManager
          */
         Preconditions.checkArgument(position >= 0, "position must be >= 0");
         return MAXIMUM_TOKEN.divide(BigInteger.valueOf(size))
-                .multiply(BigInteger.valueOf(position))
-                .add(BigInteger.valueOf(offset)).mod(MAXIMUM_TOKEN);
+        .multiply(BigInteger.valueOf(position))
+        .add(BigInteger.valueOf(offset)).mod(MAXIMUM_TOKEN);
     }
 
     /**
@@ -68,13 +69,13 @@ public class TokenManager implements ITokenManager
         int regionCount = rac_count * rac_size;
         return initialToken(regionCount, my_slot, regionOffset(region)).toString();
     }
-    
+
     @Override
     public String createToken(int my_slot, int totalCount, String region)
     {
         return initialToken(totalCount, my_slot, regionOffset(region)).toString();
     }
-    
+
     @Override
     public BigInteger findClosestToken(BigInteger tokenToSearch, List<BigInteger> tokenList)
     {
@@ -85,7 +86,7 @@ public class TokenManager implements ITokenManager
         {
             int i = Math.abs(index) - 1;
             if ((i >= sortedTokens.size()) || (i > 0 && sortedTokens.get(i).subtract(tokenToSearch)
-                    .compareTo(tokenToSearch.subtract(sortedTokens.get(i - 1))) > 0))
+            .compareTo(tokenToSearch.subtract(sortedTokens.get(i - 1))) > 0))
                 --i;
             return sortedTokens.get(i);
         }
@@ -102,17 +103,17 @@ public class TokenManager implements ITokenManager
         return Math.abs(reverse("Dynomite").hashCode());
         //return Math.abs(reverse(dataCenter).hashCode());
     }
-    
+
     private String reverse(String s)
     {
-    	if (s == null)
-    		return null;
-    	
-    	StringBuilder sb = new StringBuilder();
-    	for(int i=s.length()-1; i>=0; i--) {
-    		sb.append(s.charAt(i));
-    	}
-    	
-    	return sb.toString();
+        if (s == null)
+            return null;
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = s.length() - 1; i >= 0; i--) {
+            sb.append(s.charAt(i));
+        }
+
+        return sb.toString();
     }
 }

@@ -82,11 +82,11 @@ public final class FloridaModule extends AbstractModule {
         });
         install(new JerseyModule());
         install(new ArchaiusModule());
-/*
-        install(new SwaggerServletModule());
-        install(new JaxrsSwaggerModule());
-        install(new GuiceServletSwaggerModule());
-        */
+        /*
+                install(new SwaggerServletModule());
+                install(new JaxrsSwaggerModule());
+                install(new GuiceServletSwaggerModule());
+                */
 
         bind(FloridaServer.class).asEagerSingleton();
 
@@ -106,7 +106,7 @@ public final class FloridaModule extends AbstractModule {
         bind(InstanceEnvIdentity.class).to(AwsInstanceEnvIdentity.class);
         bind(Backup.class).to(S3Backup.class);
         bind(Restore.class).to(S3Restore.class);
-        
+
         /* Local */
         bind(InstanceDataRetriever.class).to(LocalInstanceDataRetriever.class);
 
@@ -124,13 +124,13 @@ public final class FloridaModule extends AbstractModule {
     CommonConfig getCommonConfig(ConfigProxyFactory factory) {
         return factory.newProxy(CommonConfig.class);
     }
-    
+
     @Provides
     @Singleton
     CassCommonConfig getCassCommonConfig(ConfigProxyFactory factory) {
         return factory.newProxy(CassCommonConfig.class);
     }
-    
+
     @Provides
     @Singleton
     AWSCommonConfig getAWSCommonConfig(ConfigProxyFactory factory) {

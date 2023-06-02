@@ -28,15 +28,15 @@ public class InstanceState implements IInstanceState {
     private final AtomicBoolean isStorageProxyAlive = new AtomicBoolean(false);
     private final AtomicBoolean isStorageProxyProcessAlive = new AtomicBoolean(false);
     private final AtomicBoolean isStorageAlive = new AtomicBoolean(false);
-    
+
     private Bootstrap bootstrapStatus;
-    
+
     private long bootstrapTime;
     private long backupTime;
     private long restoreTime;
-    
+
     private final AtomicBoolean isYmlWritten = new AtomicBoolean(false);
-    
+
     // This is true if storage proxy and storage are alive.
     private final AtomicBoolean isHealthy = new AtomicBoolean(false);
     // State of whether the rest endpoints /admin/stop or /admin/start are invoked
@@ -46,16 +46,16 @@ public class InstanceState implements IInstanceState {
     @Override
     public String toString() {
         return "InstanceState{" +
-                "isSideCarProcessAlive=" + isSideCarProcessAlive +
-                ", isBootstrapping=" + isBootstrapping +
-                ", isBackingup=" + isBackup +
-                ", isRestoring=" + isRestore +
-                ", isStorageProxyAlive=" + isStorageProxyAlive +
-                ", isStorageProxyProcessAlive=" + isStorageProxyProcessAlive +
-                ", isStorageAlive=" + isStorageAlive +
-                ", isHealthy=" + isHealthy +
-                ", isProcessMonitoringSuspended=" + isProcessMonitoringSuspended +
-                '}';
+        "isSideCarProcessAlive=" + isSideCarProcessAlive +
+        ", isBootstrapping=" + isBootstrapping +
+        ", isBackingup=" + isBackup +
+        ", isRestoring=" + isRestore +
+        ", isStorageProxyAlive=" + isStorageProxyAlive +
+        ", isStorageProxyProcessAlive=" + isStorageProxyProcessAlive +
+        ", isStorageAlive=" + isStorageAlive +
+        ", isHealthy=" + isHealthy +
+        ", isProcessMonitoringSuspended=" + isProcessMonitoringSuspended +
+        '}';
     }
 
     public boolean isSideCarProcessAlive() {
@@ -70,104 +70,104 @@ public class InstanceState implements IInstanceState {
     public int metricIsSideCarProcessAlive() {
         return isSideCarProcessAlive() ? 1 : 0;
     }
-   
+
     /* Boostrap */
     public boolean isBootstrapping() {
         return isBootstrapping.get();
     }
-    
+
     public Bootstrap isBootstrapStatus() {
-    	return bootstrapStatus;
+        return bootstrapStatus;
     }
-    
+
     public boolean firstBootstrap() {
-    	return firstBootstrap.get();
-    }    
-    
-    public long getBootstrapTime() {
-    	return bootstrapTime;
+        return firstBootstrap.get();
     }
-    
+
+    public long getBootstrapTime() {
+        return bootstrapTime;
+    }
+
     public void setBootstrapping(boolean isBootstrapping) {
         this.isBootstrapping.set(isBootstrapping);
     }
-    
+
     public void setBootstrapStatus(Bootstrap bootstrapStatus) {
         this.bootstrapStatus = bootstrapStatus;
     }
-    
+
     public void setFirstBootstrap(boolean firstBootstrap) {
-    	this.firstBootstrap.set(firstBootstrap); 
+        this.firstBootstrap.set(firstBootstrap);
     }
-    
+
     public void setBootstrapTime(DateTime bootstrapTime) {
-    	this.bootstrapTime = bootstrapTime.getMillis();
+        this.bootstrapTime = bootstrapTime.getMillis();
     }
-    
+
     /* Backup */
     public boolean isBackingup() {
-    	return isBackup.get();
+        return isBackup.get();
     }
-    
+
     public boolean isBackupSuccessful() {
-    	return isBackupSuccessful.get();
+        return isBackupSuccessful.get();
     }
-    
+
     public boolean firstBackup() {
-    	return firstBackup.get();
-    }    
-    
+        return firstBackup.get();
+    }
+
     public long getBackupTime() {
-    	return backupTime;
+        return backupTime;
     }
-    
+
     public void setBackingup(boolean isBackup) {
-    	this.isBackup.set(isBackup);
+        this.isBackup.set(isBackup);
     }
-    
+
     public void setBackUpStatus(boolean isBackupSuccessful) {
-    	this.isBackupSuccessful.set(isBackupSuccessful);
+        this.isBackupSuccessful.set(isBackupSuccessful);
     }
-    
+
     public void setFirstBackup(boolean firstBackup) {
-    	this.firstBackup.set(firstBackup); 
+        this.firstBackup.set(firstBackup);
     }
-    
+
     public void setBackupTime(DateTime backupTime) {
-    	this.backupTime = backupTime.getMillis();
+        this.backupTime = backupTime.getMillis();
     }
-    
+
     /* Restore */
     public boolean isRestoring() {
-    	return isRestore.get();
+        return isRestore.get();
     }
-    
+
     public boolean isRestoreSuccessful() {
-    	return isRestoreSuccessful.get();
+        return isRestoreSuccessful.get();
     }
-    
+
     public boolean firstRestore() {
-    	return firstRestore.get();
+        return firstRestore.get();
     }
-    
+
     public long getRestoreTime() {
-    	return restoreTime;
+        return restoreTime;
     }
 
     public void setRestoring(boolean isRestoring) {
-    	this.isRestore.set(isRestoring);
+        this.isRestore.set(isRestoring);
     }
-    
+
     public void setRestoreStatus(boolean isRestoreSuccessful) {
-     this.isRestoreSuccessful.set(isRestoreSuccessful);
+        this.isRestoreSuccessful.set(isRestoreSuccessful);
     }
-    
+
     public void setFirstRestore(boolean firstRestore) {
-    	this.firstRestore.set(firstRestore); 
-    }  
+        this.firstRestore.set(firstRestore);
+    }
 
     public void setRestoreTime(DateTime restoreTime) {
-    	this.restoreTime = restoreTime.getMillis();
+        this.restoreTime = restoreTime.getMillis();
     }
 
     //@Monitor(name="bootstrapping", type=DataSourceType.GAUGE)
@@ -223,7 +223,7 @@ public class InstanceState implements IInstanceState {
     private void setHealthy() {
         this.isHealthy.set(isStorageProxyAlive() && isStorageAlive());
     }
-    
+
     //@Monitor(name="healthy", type=DataSourceType.GAUGE)
     public int metricIsHealthy() {
         return isHealthy() ? 1 : 0;
@@ -241,13 +241,13 @@ public class InstanceState implements IInstanceState {
     public int metricIsProcessMonitoringSuspended() {
         return getIsProcessMonitoringSuspended() ? 1 : 0;
     }
-    
-    public boolean getYmlWritten(){
-    	return this.isYmlWritten.get();
+
+    public boolean getYmlWritten() {
+        return this.isYmlWritten.get();
     }
-    
-    public void setYmlWritten(boolean yml){
-    	this.isYmlWritten.set(yml);
+
+    public void setYmlWritten(boolean yml) {
+        this.isYmlWritten.set(yml);
     }
 
 }

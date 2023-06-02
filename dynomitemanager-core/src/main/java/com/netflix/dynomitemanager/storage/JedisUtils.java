@@ -19,13 +19,13 @@ public class JedisUtils {
     private static final Logger logger = LoggerFactory.getLogger(JedisUtils.class);
 
     private static final DynamicLongProperty minRetryMs = DynamicPropertyFactory.getInstance()
-            .getLongProperty("florida.storage.isAlive.retry.min.ms", 3000L);
+    .getLongProperty("florida.storage.isAlive.retry.min.ms", 3000L);
 
     private static final DynamicLongProperty maxRetryMs = DynamicPropertyFactory.getInstance()
-            .getLongProperty("florida.storage.isAlive.retry.max.ms", 30000L);
+    .getLongProperty("florida.storage.isAlive.retry.max.ms", 30000L);
 
     private static final DynamicIntProperty jedisConnectTimeoutMs = DynamicPropertyFactory.getInstance()
-            .getIntProperty("florida.storage.jedis.connect.timeout.ms", 30000);
+    .getIntProperty("florida.storage.jedis.connect.timeout.ms", 30000);
 
     /**
      * The caller is responsible for invoking

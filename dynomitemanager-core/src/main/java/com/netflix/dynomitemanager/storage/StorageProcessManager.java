@@ -32,13 +32,13 @@ public class StorageProcessManager {
 
     @Inject
     public StorageProcessManager(Sleeper sleeper, InstanceState instanceState, StorageProxy storageProxy) {
-	this.sleeper = sleeper;
-	this.instanceState = instanceState;
-	this.storageProxy = storageProxy;
+        this.sleeper = sleeper;
+        this.instanceState = instanceState;
+        this.storageProxy = storageProxy;
     }
-    
+
     protected void setStorageEnv(Map<String, String> env) {
-	 env.put("FLORIDA_STORAGE", String.valueOf(this.storageProxy.getEngine()));
+        env.put("FLORIDA_STORAGE", String.valueOf(this.storageProxy.getEngine()));
     }
 
     /**
@@ -47,28 +47,28 @@ public class StorageProcessManager {
      * @throws IOException
      */
     public void start() throws IOException {
-	logger.info(String.format("Starting Storage process"));
-	ProcessBuilder startBuilder = process(getStartCommand());
-	setStorageEnv(startBuilder.environment());
-	Process starter = startBuilder.start();
+        logger.info(String.format("Starting Storage process"));
+        ProcessBuilder startBuilder = process(getStartCommand());
+        setStorageEnv(startBuilder.environment());
+        Process starter = startBuilder.start();
 
-	try {
-	    sleeper.sleepQuietly(SCRIPT_EXECUTE_WAIT_TIME_MS);
-	    int code = starter.exitValue();
-	    if (code == 0) {
-		logger.info("Storage process has been started");
-		instanceState.setStorageProxyAlive(true);
-	    } else {
-		logger.error("Unable to start Storage process. Error code: {}", code);
-	    }
+        try {
+            sleeper.sleepQuietly(SCRIPT_EXECUTE_WAIT_TIME_MS);
+            int code = starter.exitValue();
+            if (code == 0) {
+                logger.info("Storage process has been started");
+                instanceState.setStorageProxyAlive(true);
+            } else {
+                logger.error("Unable to start Storage process. Error code: {}", code);
+            }
 
-	    logProcessOutput(starter);
-	} catch (Exception e) {
-	    logger.warn("Starting Storage process has an error", e);
-	}
-    }   
-    
-    
+            logProcessOutput(starter);
+        } catch (Exception e) {
+            logger.warn("Starting Storage process has an error", e);
+        }
+    }
+
+
     /**
      * A common class to initialize a ProcessBuilder
      * @param executeCommand
@@ -76,18 +76,18 @@ public class StorageProcessManager {
      * @throws IOException
      */
     private ProcessBuilder process(List<String> executeCommand) throws IOException {
-	List<String> command = Lists.newArrayList();
-	if (!"root".equals(System.getProperty("user.name"))) {
-	    command.add(SUDO_STRING);
-	    command.add("-n");
-	    command.add("-E");
-	}
-	command.addAll(executeCommand);
-	ProcessBuilder actionStorage = new ProcessBuilder(command);
-	actionStorage.directory(new File("/"));
-	actionStorage.redirectErrorStream(true);
-	
-	return actionStorage;
+        List<String> command = Lists.newArrayList();
+        if (!"root".equals(System.getProperty("user.name"))) {
+            command.add(SUDO_STRING);
+            command.add("-n");
+            command.add("-E");
+        }
+        command.addAll(executeCommand);
+        ProcessBuilder actionStorage = new ProcessBuilder(command);
+        actionStorage.directory(new File("/"));
+        actionStorage.redirectErrorStream(true);
+
+        return actionStorage;
     }
 
     /**
@@ -95,45 +95,45 @@ public class StorageProcessManager {
      * @return
      */
     private List<String> getStartCommand() {
-	List<String> startCmd = new LinkedList<String>();
-	for (String param : storageProxy.getStartupScript().split(" ")) {
-	    if (StringUtils.isNotBlank(param))
-		startCmd.add(param);
-	}
-	return startCmd;
+        List<String> startCmd = new LinkedList<String>();
+        for (String param : storageProxy.getStartupScript().split(" ")) {
+            if (StringUtils.isNotBlank(param))
+                startCmd.add(param);
+        }
+        return startCmd;
     }
-    
+
     /**
      * Getting the stop command
      * @return
      */
     private List<String> getStopCommand() {
-	List<String> stopCmd = new LinkedList<String>();
-	for (String param : storageProxy.getStopScript().split(" ")) {
-	    if (StringUtils.isNotBlank(param))
-		stopCmd.add(param);
-	}
-	return stopCmd;
+        List<String> stopCmd = new LinkedList<String>();
+        for (String param : storageProxy.getStopScript().split(" ")) {
+            if (StringUtils.isNotBlank(param))
+                stopCmd.add(param);
+        }
+        return stopCmd;
     }
 
     private void logProcessOutput(Process p) {
-	try {
-	    final String stdOut = readProcessStream(p.getInputStream());
-	    final String stdErr = readProcessStream(p.getErrorStream());
-	    logger.info("std_out: {}", stdOut);
-	    logger.info("std_err: {}", stdErr);
-	} catch (IOException ioe) {
-	    logger.warn("Failed to read the std out/err streams", ioe);
-	}
+        try {
+            final String stdOut = readProcessStream(p.getInputStream());
+            final String stdErr = readProcessStream(p.getErrorStream());
+            logger.info("std_out: {}", stdOut);
+            logger.info("std_err: {}", stdErr);
+        } catch (IOException ioe) {
+            logger.warn("Failed to read the std out/err streams", ioe);
+        }
     }
 
     String readProcessStream(InputStream inputStream) throws IOException {
-	final byte[] buffer = new byte[512];
-	final ByteArrayOutputStream baos = new ByteArrayOutputStream(buffer.length);
-	int cnt;
-	while ((cnt = inputStream.read(buffer)) != -1)
-	    baos.write(buffer, 0, cnt);
-	return baos.toString();
+        final byte[] buffer = new byte[512];
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream(buffer.length);
+        int cnt;
+        while ((cnt = inputStream.read(buffer)) != -1)
+            baos.write(buffer, 0, cnt);
+        return baos.toString();
     }
 
     /**
@@ -142,22 +142,22 @@ public class StorageProcessManager {
      * @throws IOException
      */
     public void stop() throws IOException {
-	logger.info("Stopping storage process...");
-	ProcessBuilder stopBuilder = process(getStopCommand());
-	Process stopper = stopBuilder.start();
+        logger.info("Stopping storage process...");
+        ProcessBuilder stopBuilder = process(getStopCommand());
+        Process stopper = stopBuilder.start();
 
-	sleeper.sleepQuietly(SCRIPT_EXECUTE_WAIT_TIME_MS);
-	try {
-	    int code = stopper.exitValue();
-	    if (code == 0) {
-		logger.info("Storage process has been stopped");
-		instanceState.setStorageProxyAlive(false);
-	    } else {
-		logger.error("Unable to stop storage process. Error code: {}", code);
-		logProcessOutput(stopper);
-	    }
-	} catch (Exception e) {
-	    logger.warn("Could not shut down storage process correctly: ", e);
-	}
+        sleeper.sleepQuietly(SCRIPT_EXECUTE_WAIT_TIME_MS);
+        try {
+            int code = stopper.exitValue();
+            if (code == 0) {
+                logger.info("Storage process has been stopped");
+                instanceState.setStorageProxyAlive(false);
+            } else {
+                logger.error("Unable to stop storage process. Error code: {}", code);
+                logProcessOutput(stopper);
+            }
+        } catch (Exception e) {
+            logger.warn("Could not shut down storage process correctly: ", e);
+        }
     }
 }

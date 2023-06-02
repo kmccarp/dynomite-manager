@@ -54,13 +54,13 @@ public class VpcInstanceDataRetriever implements InstanceDataRetriever {
         String vpcId = null;
         try {
             vpcId = SystemUtils
-                    .getDataFromUrl(
-                            "http://169.254.169.254/latest/meta-data/network/interfaces/macs/" + nacId + "vpc-id")
-                    .trim();
+            .getDataFromUrl(
+            "http://169.254.169.254/latest/meta-data/network/interfaces/macs/" + nacId + "vpc-id")
+            .trim();
         } catch (Exception e) {
             logger.info(
-                    "Vpc id does not exist for running instance, not fatal as running instance maybe not be in vpc.  Msg: "
-                            + e.getLocalizedMessage());
+            "Vpc id does not exist for running instance, not fatal as running instance maybe not be in vpc.  Msg: "
+            + e.getLocalizedMessage());
         }
 
         return vpcId;

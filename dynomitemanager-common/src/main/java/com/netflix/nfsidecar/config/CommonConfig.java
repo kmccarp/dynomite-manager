@@ -23,28 +23,28 @@ import com.netflix.archaius.api.annotations.PropertyName;
 
 @Configuration(prefix = "dbsidecar.common")
 public interface CommonConfig {
-    
+
     /**
      * @return Get the Region name
      */
     @DefaultValue("")
     @PropertyName(name = "region")
     public String getRegion();
-    
+
     @DefaultValue("")
     @PropertyName(name = "rack")
     public String getRack();
-    
+
     @PropertyName(name = "zones.available")
     public List<String> getRacks();
-    
+
 
     /**
      * Get the security group associated with nodes in this cluster
      */
     @PropertyName(name = "acl.groupname")
     public String getACLGroupName();
-    
+
     /*****************************************************************/
 
     /**
@@ -98,8 +98,6 @@ public interface CommonConfig {
     @DefaultValue("20101010")
     @PropertyName(name = "dyno.backup.restore.date")
     public String getRestoreDate();
-    
 
-    
-    
+
 }
