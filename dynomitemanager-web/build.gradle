@@ -5,14 +5,14 @@ apply plugin: 'jacoco'
 
 // Gretty allows us to run tomcat from the command line using the "tomcatRun" task.
 if (!gradle.startParameter.taskRequests.isEmpty()) {
-    Properties development_properties = new Properties()
-    development_properties.load(new FileInputStream(file("src/main/resources/laptop.properties")))
+    Properties developmentProperties = new Properties()
+    developmentProperties.load(new FileInputStream(file("src/main/resources/laptop.properties")))
     gretty {
         jacocoEnabled = false
-        httpPort = development_properties.getProperty("netflix.appinfo.port", "8080").toInteger()
+        httpPort = developmentProperties.getProperty("netflix.appinfo.port", "8080").toInteger()
         contextPath = '/'
         servletContainer = 'tomcat8'
-        systemProperties = development_properties
+        systemProperties = developmentProperties
         scanDirs = ['**/src/main/resources/**']
         scanDependencies = true
         // More properties can be found here:
