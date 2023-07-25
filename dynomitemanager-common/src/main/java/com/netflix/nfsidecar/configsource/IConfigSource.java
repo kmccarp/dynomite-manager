@@ -1,4 +1,4 @@
-package com.netflix.nfsidecar.configSource;
+package com.netflix.nfsidecar.configsource;
 
 import java.util.List;
 
