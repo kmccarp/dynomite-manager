@@ -8,8 +8,8 @@ public class MemcachedStorageProxy implements StorageProxy {
     private static final int MEMCACHE_PORT = 11211;
     private static final String MEMCACHE_ADDRESS = "127.0.0.1";
     
-    private final String DEFAULT_MEMCACHED_START_SCRIPT = "/apps/memcached/bin/memcached";
-    private final String DEFAULT_MEMCACHED_STOP_SCRIPT = "/usr/bin/pkill memcached";
+    private final String defaultMemcachedStartScript = "/apps/memcached/bin/memcached";
+    private final String defaultMemcachedStopScript = "/usr/bin/pkill memcached";
 
 
     @Override
@@ -65,12 +65,12 @@ public class MemcachedStorageProxy implements StorageProxy {
 
     @Override
     public String getStartupScript() {
-	return DEFAULT_MEMCACHED_START_SCRIPT;
+	return defaultMemcachedStartScript;
     }
 
     @Override
     public String getStopScript() {
-	return DEFAULT_MEMCACHED_STOP_SCRIPT;
+	return defaultMemcachedStopScript;
     }
 
     @Override

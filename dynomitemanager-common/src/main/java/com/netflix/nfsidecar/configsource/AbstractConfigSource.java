@@ -1,4 +1,4 @@
-package com.netflix.nfsidecar.configSource;
+package com.netflix.nfsidecar.configsource;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
