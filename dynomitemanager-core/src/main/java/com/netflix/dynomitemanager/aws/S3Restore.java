@@ -85,7 +85,7 @@ public class S3Restore implements Restore {
 
                     String filepath = null;
 
-                    if (floridaConfig.persistenceType().equals("aof")) {
+                    if ("aof".equals(floridaConfig.persistenceType())) {
                         filepath = floridaConfig.getPersistenceLocation() + "/appendonly.aof";
                     } else {
                         filepath = floridaConfig.getPersistenceLocation() + "/nfredis.rdb";
