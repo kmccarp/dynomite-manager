@@ -53,20 +53,20 @@ public class TokenManager implements ITokenManager
     /**
      * Creates a token given the following parameter
      * 
-     * @param my_slot
+     * @param mySlot
      *            -- Slot where this instance has to be.
-     * @param rac_count
+     * @param racCount
      *            -- Rac count is the numeber of RAC's
-     * @param rac_size
+     * @param racSize
      *            -- number of memberships in the rac
      * @param region
      *            -- name of the DC where it this token is created.
      */
     @Override
-    public String createToken(int my_slot, int rac_count, int rac_size, String region)
+    public String createToken(int mySlot, int racCount, int racSize, String region)
     {
-        int regionCount = rac_count * rac_size;
-        return initialToken(regionCount, my_slot, regionOffset(region)).toString();
+        int regionCount = racCount * racSize;
+        return initialToken(regionCount, mySlot, regionOffset(region)).toString();
     }
     
     @Override
@@ -85,8 +85,9 @@ public class TokenManager implements ITokenManager
         {
             int i = Math.abs(index) - 1;
             if ((i >= sortedTokens.size()) || (i > 0 && sortedTokens.get(i).subtract(tokenToSearch)
-                    .compareTo(tokenToSearch.subtract(sortedTokens.get(i - 1))) > 0))
+                    .compareTo(tokenToSearch.subtract(sortedTokens.get(i - 1))) > 0)) {
                 --i;
+            }
             return sortedTokens.get(i);
         }
         return sortedTokens.get(index);
@@ -105,8 +106,9 @@ public class TokenManager implements ITokenManager
     
     private String reverse(String s)
     {
-    	if (s == null)
-    		return null;
+        if (s == null) {
+            return null;
+        }
     	
     	StringBuilder sb = new StringBuilder();
     	for(int i=s.length()-1; i>=0; i--) {
